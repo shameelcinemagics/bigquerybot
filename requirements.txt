@@ -1,0 +1,6 @@
+streamlit
+openai
+google-cloud-bigquery
+python-dotenv
+pandas
+db-dtypes
