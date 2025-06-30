@@ -2,6 +2,7 @@
 import os
 import streamlit as st
 import pandas as pd
+import tempfile
 import re
 import json
 from dotenv import load_dotenv
@@ -9,8 +10,14 @@ from google.cloud import bigquery
 from openai import OpenAI
 
 # Load environment variables
-load_dotenv()
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+google_creds = os.getenv("GOOGLE_CREDENTIALS")
+if google_creds:
+    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
+        f.write(google_creds)
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = f.name
+else:
+    # Local fallback
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 openai_api_key = os.environ.get("OPENAI_API_KEY")
 
 # Initialize clients
